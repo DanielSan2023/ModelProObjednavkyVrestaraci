@@ -1,9 +1,10 @@
 package com.Engeto.Restaurant;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class CookBook {
 
@@ -68,5 +69,36 @@ public class CookBook {
       System.out.println();
     }
   }
+  public static void loadDishesFromFile(String filename) {
+    try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(filename))) {
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        parseDishLine(line);
+      }
+    } catch (FileNotFoundException e) {
+      System.err.println("Nepodařilo se nalézt soubor " + filename + ": " + e.getLocalizedMessage());
+    } catch (IOException e) {
+      System.err.println("Chyba při čtení souboru " + filename + ": " + e.getLocalizedMessage());
+    }
+  }
+
+  private static void parseDishLine(String line) {
+    String[] blocks = line.split("\t");
+    int numOfBlocks = blocks.length;
+    if (numOfBlocks != 2) {
+      System.err.println("Nesprávný počet položek na řádku: " + line + "! Počet položek: " + numOfBlocks + ".");
+      return;
+    }
+
+    String title = blocks[0].trim();
+    double price = Double.parseDouble(blocks[1].trim());
+    int preparationTime = Integer.parseInt(blocks[2].trim());
+    String image = blocks[3].trim();
+    int idDish = Integer.parseInt(blocks[4].trim());
+
+    Dish newDish = new Dish(title, price, preparationTime, image);
+    addDish(idDish, newDish);
+  }
+
 
 }
