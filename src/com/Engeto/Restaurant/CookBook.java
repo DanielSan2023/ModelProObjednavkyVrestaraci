@@ -1,10 +1,9 @@
 package com.Engeto.Restaurant;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.*;
+
 
 public class CookBook {
 
@@ -14,17 +13,22 @@ public class CookBook {
     dishes = new HashMap<>();
   }
 
-  public void addDish(int idDish,Dish newDish) {
+  public static void addDish(int idDish, Dish newDish) {
     // Přidáme nové jídlo do mapy s použitím jeho ID jako klíče
     dishes.put(idDish, newDish);
   }
 
-  public void addDish(Dish newDish) {
+// // public  void addDish(Dish newDish) {
+//    int id = generateNewId();
+//    newDish.setIdDish(id);
+//    dishes.put(id, newDish);
+//  }
+  public static void addDish(Dish newDish) {
     int id = generateNewId();
     newDish.setIdDish(id);
     dishes.put(id, newDish);
   }
-  private int generateNewId() {
+  private static int generateNewId() {
     int maxId = dishes.keySet().stream().max(Integer::compare).orElse(0);
     return maxId + 1;
   }
@@ -69,35 +73,41 @@ public class CookBook {
       System.out.println();
     }
   }
-  public static void loadDishesFromFile(String filename) {
-    try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(filename))) {
-      while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
-        parseDishLine(line);
+  public void saveToFile(String filename, CookBook cookBook) throws DishException {
+    try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)))) {
+        for (Dish dish : cookBook.getDishes()) { // Předpokládáme, že máte metodu getDishes v třídě CookBook
+        writer.println(dish.getTitle() + Settings.fileItemDelimiter() + dish.getPrice() + Settings.fileItemDelimiter()
+                + dish.getPreparationTime());
       }
-    } catch (FileNotFoundException e) {
-      System.err.println("Nepodařilo se nalézt soubor " + filename + ": " + e.getLocalizedMessage());
     } catch (IOException e) {
-      System.err.println("Chyba při čtení souboru " + filename + ": " + e.getLocalizedMessage());
+      throw new DishException("Chyba při zápisu do souboru '" + filename + "': " + e.getLocalizedMessage());
     }
   }
 
-  private static void parseDishLine(String line) {
-    String[] blocks = line.split("\t");
-    int numOfBlocks = blocks.length;
-    if (numOfBlocks != 2) {
-      System.err.println("Nesprávný počet položek na řádku: " + line + "! Počet položek: " + numOfBlocks + ".");
-      return;
+  public static void loadDishesFromFile(String filename) throws DishException {
+    try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(filename)))) {
+        while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        Dish dish = parseDishLine(line);
+        addDish(dish); // Přidejte vytvořený objekt Dish do seznamu jídel
+      }
+    } catch (FileNotFoundException e) {
+      throw new DishException("Nepodařilo se nalézt soubor " + filename + ": " + e.getLocalizedMessage());
     }
-
+  }
+  private static Dish parseDishLine(String line) throws DishException {
+    String[] blocks = line.split(Settings.fileItemDelimiter());
+    int numOfBlocks = blocks.length;
+    if (numOfBlocks != 3) {
+      System.err.println("Nesprávný počet položek na řádku: " + line + "! Počet položek: " + numOfBlocks + ".");
+      return null; // Vrátí null, pokud nebylo možné načíst Dish
+    }
     String title = blocks[0].trim();
     double price = Double.parseDouble(blocks[1].trim());
     int preparationTime = Integer.parseInt(blocks[2].trim());
-    String image = blocks[3].trim();
-    int idDish = Integer.parseInt(blocks[4].trim());
-
-    Dish newDish = new Dish(title, price, preparationTime, image);
-    addDish(idDish, newDish);
+    // Vytvoření objektu Dish s načtenými hodnotami
+    Dish newDish = new Dish(title, price, preparationTime);
+    return newDish;
   }
 
 
