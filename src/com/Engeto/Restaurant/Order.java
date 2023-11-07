@@ -147,9 +147,13 @@ public class Order {
 
 
 
-    public void setFulfilmentTime(LocalTime fulfilmentTime) {
-
-        this.fulfilmentTime = fulfilmentTime;
+    public void setFulfilmentTime() {
+        if (orderTime != null && dish != null) {
+            int preparationTimeMinutes = dish.getPreparationTime(); // Doba přípravy v minutách
+            if (preparationTimeMinutes > 0) {
+                fulfilmentTime = orderTime.plusMinutes(preparationTimeMinutes);
+            }
+        }
     }
 
     public void markAsPaid() {

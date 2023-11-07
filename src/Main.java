@@ -97,6 +97,8 @@ public class Main {
        order4.setFulfilmentTime();
 
 
+       OrderManager.saveOrdersToFile("orders.txt");
+
 
     }
 

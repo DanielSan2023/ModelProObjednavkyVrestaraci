@@ -8,7 +8,7 @@ public class OrderManager {
     public static void saveOrdersToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Order order : Order.getOrderss().values()) {
-                writer.write(order.getOrderId() + " " + order.getDish().getIdDish());
+                writer.write(order.getOrderId() + "\t" + order.getDishId());
                 writer.newLine();
             }
             System.out.println("Objednávky byly uloženy do souboru '" + filename + "'.");
