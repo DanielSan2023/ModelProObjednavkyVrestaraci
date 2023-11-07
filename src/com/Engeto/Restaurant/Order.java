@@ -19,7 +19,7 @@ public class Order {
     private boolean isPaid;
     private int countDish = 1;
 
-    private static int nextOrderId;
+    private static int nextOrderId =1;
     //  zoznam objednavok : Tablenumber,Objednavka
     private static Map<Integer, Order> orderss = new HashMap<>();
 
@@ -38,33 +38,35 @@ public class Order {
         if (orders.isEmpty()) {
             System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
         } else {
-            System.out.println("Objednávky pro stůl č. " + tableNumber + ":");
+            System.out.println("** Objednávky pro stůl č. " + tableNumber + " **");
+            System.out.println("****");
             for (Order order : orders) {
                 System.out.println(order.getDescription());
             }
+            System.out.println("******");
         }
     }
     public String getDescription() {
         StringBuilder description = new StringBuilder();
-        description.append("Číslo stolu: ").append(tableNumber).append("\n");
-        description.append("Číslo objednávky na tomto stolu: ").append(orderId).append("\n");
-        description.append("Jídlo: ").append(dish.getTitle()).append("\n");
-        description.append("Počet porcí: ").append(countDish).append("\n");
-        description.append("Cena: ").append(totalDishPrice()).append(" €").append("\n");
-        description.append("Čas objednávky: ").append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\n");
+//        description.append("Číslo stolu: ").append(tableNumber).append("\n");
+//        description.append("Číslo objednávky na tomto stolu: ").append(orderId).append("\n");
+//        description.append("Jídlo: ").append(dish.getTitle()).append("\n");
+//        description.append("Počet porcí: ").append(countDish).append("\n");
+//        description.append("Cena: ").append(totalDishPrice()).append(" €").append("\n");
+//        description.append("Čas objednávky: ").append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\n");
+        description.append(orderId).append(".").append(" ").append(dish.getTitle()).append(" ").append(countDish).append(" ").append("(")
+                .append(totalDishPrice()).append(" €").append(")").append(":").append("\t")
+                .append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("-");
 
         if (fulfilmentTime != null) {
-            description.append("Čas vyřízení: ").append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\n");
-        } else {
-            description.append("Čas vyřízení: nezadáno").append("\n");
-        }
-
-        description.append("Stav platby: ").append(isPaid ? "Zaplaceno" : "Nezaplaceno").append("\n");
-
+            description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
+                }
+        description.append(isPaid ? "Zaplaceno" : "Nezaplaceno");
         return description.toString();
     }
     public double totalDishPrice() {
-        return countDish * dish.getPrice();
+        double price = countDish * dish.getPrice();
+        return Math.round(price * 100.0) / 100.0;
     }
 
 
