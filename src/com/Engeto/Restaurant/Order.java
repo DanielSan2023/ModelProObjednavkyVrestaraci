@@ -7,8 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Order {
-    public static Map<Integer, List<Dish>> orders = new HashMap<>();
-    public static List<Order> orderList = new ArrayList<>(); // Zoznam objednávok
+
 
 
     private int orderId;
@@ -26,6 +25,18 @@ public class Order {
     public void addOrder(Order order) {
         orderss.put(order.getOrderId(), order);
     }
+    public static Order getOrder(int orderId) {
+        return orderss.get(orderId);
+    }
+
+    public static Map<Integer, Order> getOrderss() {
+        return orderss;
+    }
+
+    public static void setOrderss(Map<Integer, Order> orderss) {
+        Order.orderss = orderss;
+    }
+
     public static List<Order> getOrdersForTable(int tableNumber) {
         return orderss.values()
                 .stream()
@@ -35,10 +46,10 @@ public class Order {
 
     public static void printOrdersForTable(int tableNumber) {
         List<Order> orders = getOrdersForTable(tableNumber);
-        if (orders.isEmpty()) {
+              if (orders.isEmpty()) {
             System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
         } else {
-            System.out.println("** Objednávky pro stůl č. " + tableNumber + " **");
+            System.out.println("** Objednávky pro stůl č." + formatTableNumber(tableNumber) + " **");
             System.out.println("****");
             for (Order order : orders) {
                 System.out.println(order.getDescription());
@@ -48,25 +59,27 @@ public class Order {
     }
     public String getDescription() {
         StringBuilder description = new StringBuilder();
-//        description.append("Číslo stolu: ").append(tableNumber).append("\n");
-//        description.append("Číslo objednávky na tomto stolu: ").append(orderId).append("\n");
-//        description.append("Jídlo: ").append(dish.getTitle()).append("\n");
-//        description.append("Počet porcí: ").append(countDish).append("\n");
-//        description.append("Cena: ").append(totalDishPrice()).append(" €").append("\n");
-//        description.append("Čas objednávky: ").append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\n");
-        description.append(orderId).append(".").append(" ").append(dish.getTitle()).append(" ").append(countDish).append(" ").append("(")
+        description.append(orderId).append(".").append(" ").append(dish.getTitle())
+                .append(" ").append(countDish).append(" ").append("(")
                 .append(totalDishPrice()).append(" €").append(")").append(":").append("\t")
                 .append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("-");
 
         if (fulfilmentTime != null) {
             description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
                 }
-        description.append(isPaid ? "Zaplaceno" : "Nezaplaceno");
+        description.append(isPaid ? "Zaplaceno" : "");
         return description.toString();
     }
     public double totalDishPrice() {
         double price = countDish * dish.getPrice();
         return Math.round(price * 100.0) / 100.0;
+    }
+    public static String formatTableNumber(int tableNumber) {
+        if (tableNumber >= 1 && tableNumber <= 9) {
+            return " " + tableNumber;  // Přidejte mezeru před jednocifernými čísly
+        } else {
+            return String.valueOf(tableNumber);  // Vrací dvojciferná čísla beze změn
+        }
     }
 
 
@@ -130,20 +143,9 @@ public class Order {
 
 
 
-    public static List<Order> getOrderList() {
-        return orderList;
-    }
 
 
 
-    public void setFulfilmentTime() {
-        if (orderTime != null && dish != null) {
-            int preparationTimeMinutes = dish.getPreparationTime(); // Doba přípravy v minutách
-            if (preparationTimeMinutes > 0) {
-                fulfilmentTime = orderTime.plusMinutes(preparationTimeMinutes);
-            }
-        }
-    }
 
     public void setFulfilmentTime(LocalTime fulfilmentTime) {
 
@@ -187,65 +189,6 @@ public class Order {
         this.countDish = countDish;
     }
 
-
-    public static void listOrderDetails(int tableNumber) {
-        List<Dish> dishes = orders.get(tableNumber);
-        if (dishes == null) {
-            System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
-            return;
-        }
-        //duplikaty prec
-        Set<Dish> uniqueDishesSet = new HashSet<>(dishes);
-        dishes = new ArrayList<>(uniqueDishesSet);
-
-        System.out.println("Objednávky pro stůl č. " + tableNumber + ":");
-        System.out.println("***");
-        for (int i = 0; i < dishes.size(); i++) {
-            Dish dish = dishes.get(i);
-            System.out.println(+(i + 1) + ":" + dish.getTitle() + dish.getPrice() + " €");
-            //      System.out.println("pocet jedla:"+ getCountDish());
-//            System.out.println(" - Čas zadání objednávky: " + order.getOrderTime());
-//            if (order.getFulfilmentTime() != null) {
-//                System.out.println(" - Čas vyřízení objednávky: " + order.getFulfilmentTime());
-//            }
-//            System.out.println(" - Order ID: " + order.getOrderId());
-//            System.out.println(" - Stav platby: " + (order.isPaid() ? "Zaplaceno" : "Nezaplaceno"));
-//            System.out.println();
-
-        }
-        System.out.println("*****");
-    }
-
-
-    public static void listOrderTimes() {
-        List<LocalTime> orderTimes = orderList.stream()
-                .map(Order::getOrderTime)
-                .collect(Collectors.toList());
-
-        System.out.println("Časy objednávok:");
-
-        for (int i = 0; i < orderTimes.size(); i++) {
-            LocalTime orderTime = orderTimes.get(i);
-            String formattedTime = orderTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            System.out.println("Objednávka " + (i + 1) + ": " + formattedTime);
-        }
-    }
-
-    public   void listOrderDetailsForTable(int tableNumber) {
-        List<Dish> dishes = orders.get(tableNumber);
-        if (dishes == null) {
-            System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
-            return;
-        }
-
-        System.out.println("Objednávky pre stůl č. " + tableNumber + ":");
-
-        for (Dish dish : dishes) {
-            LocalTime orderTime = getOrderTime();
-            String formattedTime = orderTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            System.out.println("Stůl č. " + tableNumber + " - Jedlo: " + dish.getTitle() + "pocet jedal: "+getCountDish()+" Čas objednania: " + formattedTime);
-        }
-    }
 
 
 
