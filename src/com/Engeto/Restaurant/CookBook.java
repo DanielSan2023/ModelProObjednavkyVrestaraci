@@ -65,18 +65,18 @@ public class CookBook {
     for (Map.Entry<Integer, Dish> entry : dishes.entrySet()) {
       int dishId = entry.getKey();
       Dish dish = entry.getValue();
-      System.out.println("ID: " + dishId);
-      System.out.println("Title: " + dish.getTitle());
-      System.out.println("Price: " + dish.getPrice() + " Kč");
-      System.out.println("Preparation Time: " + dish.getPreparationTime() + " minutes");
-      System.out.println("Image: " + dish.getImage());
-      System.out.println();
+      System.out.print("ID: " + dishId);
+      System.out.print("  Jedlo: " + dish.getTitle());
+      System.out.print(" cena: " + dish.getPrice() + " € ");
+      System.out.print(" doba pripravy: " + dish.getPreparationTime() + " minut");
+      //System.out.println("Image: " + dish.getImage());
+      System.out.println(" ");
     }
   }
   public void saveToFile(String filename, CookBook cookBook) throws DishException {
     try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)))) {
-        for (Dish dish : cookBook.getDishes()) { // Předpokládáme, že máte metodu getDishes v třídě CookBook
-        writer.println(dish.getTitle() + Settings.fileItemDelimiter() + dish.getPrice() + Settings.fileItemDelimiter()
+        for (Dish dish : cookBook.getDishes()) {
+        writer.println(dish.getIdDish()+Settings.fileItemDelimiter()+dish.getTitle() + Settings.fileItemDelimiter() + dish.getPrice() + Settings.fileItemDelimiter()
                 + dish.getPreparationTime());
       }
     } catch (IOException e) {
@@ -98,15 +98,16 @@ public class CookBook {
   private static Dish parseDishLine(String line) throws DishException {
     String[] blocks = line.split(Settings.fileItemDelimiter());
     int numOfBlocks = blocks.length;
-    if (numOfBlocks != 3) {
+    if (numOfBlocks != 4) {
       System.err.println("Nesprávný počet položek na řádku: " + line + "! Počet položek: " + numOfBlocks + ".");
       return null; // Vrátí null, pokud nebylo možné načíst Dish
     }
-    String title = blocks[0].trim();
-    double price = Double.parseDouble(blocks[1].trim());
-    int preparationTime = Integer.parseInt(blocks[2].trim());
+    int idDish = Integer.parseInt(blocks[0].trim());
+    String title = blocks[1].trim();
+    double price = Double.parseDouble(blocks[2].trim());
+    int preparationTime = Integer.parseInt(blocks[3].trim());
     // Vytvoření objektu Dish s načtenými hodnotami
-    Dish newDish = new Dish(title, price, preparationTime);
+    Dish newDish = new Dish(title, price, preparationTime,idDish);
     return newDish;
   }
 
