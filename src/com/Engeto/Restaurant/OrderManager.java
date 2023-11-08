@@ -1,14 +1,22 @@
 package com.Engeto.Restaurant;
 import java.io.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 
 
 
 public class OrderManager {
-    public static void saveOrdersToFile(String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Order order : Order.getOrderss().values()) {
-                writer.write(order.getOrderId() + "\t" + order.getDishId());
+    Order order = new Order();
+    public  void saveOrdersToFile(String filename) {
+
+         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Order order : order.getOrderss().values()) {
+                writer.write(order.getOrderId() + "\t" + order.getTableNumber()+"\t"
+                        +order.getDishId()+"\t"+order.getCountDish()+"\t" +order.getOrderTime()
+                        .format(DateTimeFormatter.ofPattern("HH:mm"))
+                        +"\t"+ fulfilmentTimeString(order.getFulfilmentTime())+"\t" +order.isPaid());
                 writer.newLine();
             }
             System.out.println("Objednávky byly uloženy do souboru '" + filename + "'.");
@@ -16,6 +24,13 @@ public class OrderManager {
             e.printStackTrace();
         }
     }
+    public  static String fulfilmentTimeString(LocalTime localtime){
+        String fulfilmentTimeStr = localtime != null ?
+                localtime.format(DateTimeFormatter.ofPattern("HH:mm")) : "null";
+
+        return fulfilmentTimeStr;
+    }
+
 
     public static void loadOrdersFromFile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -37,4 +52,6 @@ public class OrderManager {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         CookBook cookBook = new CookBook();
         List<Order> orders = new ArrayList<>();
+        Order order = new Order();
 
 
          //Vytvoření jídel
@@ -75,9 +76,19 @@ public class Main {
         Order order18 = new Order(11, 6);
         Order order5 = new Order(9, 1,2);
         Order order7 = new Order(9, 3);
-//       Order.listOrderDetails(9);
-//       Order.listOrderDetails(2);
 
+
+
+        order.addOrder(order2);
+        order.addOrder(order4);
+        order.addOrder(order8);
+        order.addOrder(order10);
+        order.addOrder(order12);
+        order.addOrder(order14);
+        order.addOrder(order16);
+        order.addOrder(order18);
+        order.addOrder(order5);
+        order.addOrder(order7);
 
 
 
@@ -85,19 +96,19 @@ public class Main {
         cookBook.printDishes();
 
 
-        Order.printOrdersForTable(2);
-        Order.printOrdersForTable(9);
-        Order.printOrdersForTable(11);
+        order.printOrdersForTable(2);
+        order.printOrdersForTable(9);
+        order.printOrdersForTable(11);
 
         // vybavenie objednavky
         order2.setFulfilmentTime();
         order4.setFulfilmentTime();
         order2.markAsPaid();
-        Order.printOrdersForTable(2);
+        order.printOrdersForTable(2);
        order4.setFulfilmentTime();
 
-
-       OrderManager.saveOrdersToFile("orders.txt");
+OrderManager ordermanager = new OrderManager();
+       ordermanager.saveOrdersToFile("orders.txt");
 
 
     }

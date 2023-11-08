@@ -20,31 +20,31 @@ public class Order {
 
     private static int nextOrderId =1;
     //  zoznam objednavok : Tablenumber,Objednavka
-    private static Map<Integer, Order> orderss = new HashMap<>();
+    private  static Map<Integer, Order> orderss = new HashMap<>();
 
     public void addOrder(Order order) {
         orderss.put(order.getOrderId(), order);
     }
-    public static Order getOrder(int orderId) {
+    public  Order getOrder(int orderId) {
         return orderss.get(orderId);
     }
 
-    public static Map<Integer, Order> getOrderss() {
+    public  Map<Integer, Order> getOrderss() {
         return orderss;
     }
 
-    public static void setOrderss(Map<Integer, Order> orderss) {
-        Order.orderss = orderss;
+    public void setOrderss(Map<Integer, Order> orderss) {
+        this.orderss = orderss;
     }
 
-    public static List<Order> getOrdersForTable(int tableNumber) {
+    public  List<Order> getOrdersForTable(int tableNumber) {
         return orderss.values()
                 .stream()
                 .filter(order -> order.getTableNumber() == tableNumber)
                 .collect(Collectors.toList());
     }
 
-    public static void printOrdersForTable(int tableNumber) {
+    public  void printOrdersForTable(int tableNumber) {
         List<Order> orders = getOrdersForTable(tableNumber);
               if (orders.isEmpty()) {
             System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
@@ -57,6 +57,19 @@ public class Order {
             System.out.println("******");
         }
     }
+//    public List<Order> getOrdersForTable(int tableNumber) {
+//        List<Order> ordersForTable = new ArrayList<>();
+//
+//        for (Order order : orderss.values()) {
+//            if (order.getTableNumber() == tableNumber) {
+//                ordersForTable.add(order);
+//            }
+//        }
+//
+//        return ordersForTable;
+//    }
+
+
     public String getDescription() {
         StringBuilder description = new StringBuilder();
         description.append(orderId).append(".").append(" ").append(dish.getTitle())
@@ -175,6 +188,7 @@ public class Order {
     public LocalTime getOrderTime() {
         return orderTime;
     }
+
 
     public LocalTime getFulfilmentTime() {
         return fulfilmentTime;
