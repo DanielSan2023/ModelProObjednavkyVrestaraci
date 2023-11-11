@@ -62,12 +62,11 @@ public class OrderManager {
 
         Order order = new Order(tableNumber, dishId, countDish);
         order.setOrderId(orderId);
-       // order.setOrderTime(orderTime);
-       // order.setFulfilmentTime(fulfilmentTime);
         order.setPaid(isPaid);
 
         return order;
     }
+
 
 
 

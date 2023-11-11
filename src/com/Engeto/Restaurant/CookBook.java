@@ -18,11 +18,11 @@ public class CookBook {
     dishes.put(idDish, newDish);
   }
 
-// // public  void addDish(Dish newDish) {
-//    int id = generateNewId();
-//    newDish.setIdDish(id);
-//    dishes.put(id, newDish);
-//  }
+  public  void addDishObj(Dish newDish) {
+    int id = generateNewId();
+    newDish.setIdDish(id);
+    dishes.put(id, newDish);
+  }
   public static void addDish(Dish newDish) {
     int id = generateNewId();
     newDish.setIdDish(id);
