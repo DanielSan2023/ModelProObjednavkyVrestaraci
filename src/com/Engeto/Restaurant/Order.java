@@ -19,6 +19,8 @@ public class Order {
     private int countDish = 1;
     private static  int nextBillId =1 ;
 
+
+
     private static int nextOrderId =1;
 
     //  zoznam objednavok : Tablenumber,Objednavka
@@ -64,6 +66,16 @@ public class Order {
 
         return description.toString();
     }
+
+    public void printTotalDishPriceForTable(int tableNumber) {
+        List<Order> orders = getOrdersForTable(tableNumber);
+        double total = 0.0;
+        for (Order order : orders) {
+            total += order.totalDishPrice();
+        }
+        System.out.println("Celkova cena konzumace pro stůl číslo "+tableNumber +" je :"  + Math.round(total * 100.0) / 100.0+"€");
+    }
+
     public double totalDishPrice() {
         double price = countDish * dish.getPrice();
         return Math.round(price * 100.0) / 100.0;
@@ -113,12 +125,13 @@ public class Order {
 
     public void settingFulfilmentTime() {
         if (orderTime != null && dish != null) {
-            int preparationTimeMinutes = dish.getPreparationTime(); // Doba přípravy v minutách
+            int preparationTimeMinutes = dish.getPreparationTime();
             if (preparationTimeMinutes > 0) {
                 fulfilmentTime = orderTime.plusMinutes(preparationTimeMinutes);
             }
         }
     }
+
 
 //region construktors
 
@@ -149,7 +162,7 @@ public class Order {
 
 //endregion construktors
 
-
+//region Getter Setter
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
@@ -199,7 +212,7 @@ public class Order {
         return dish.getIdDish();
     }
 
-    public LocalTime getOrderTime() {
+    public  LocalTime getOrderTime() {
         return orderTime;
     }
 
@@ -223,7 +236,7 @@ public class Order {
         this.countDish = countDish;
     }
 
-
+//endregion Getter Setter
     @Override
         public String toString () {
             return "Order{" +
