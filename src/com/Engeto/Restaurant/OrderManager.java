@@ -1,5 +1,7 @@
 package com.Engeto.Restaurant;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -29,28 +31,35 @@ public class OrderManager {
 
 
 
+
     public void loadOrdersFromFile(String filename) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Rozdelíme metódu na časti pre načítanie a parsovanie
-                 order = loadOrderFromLine(line);
-                if (order != null) {
-                    order.addOrder(order);
-                                    }
+        Path file = Path.of(filename);
+        try {
+            if (Files.size(file) == 0) {
+                System.out.println("Soubor '" + filename + "' je prázdný.");
+                return;  }
+            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Order order = loadOrderFromLine(line);
+                    if (order != null) {
+                        order.addOrder(order);
+                    } else {
+                        throw new RestaurantException("Neplatný formát řádku v souboru " + filename);    }    }
+                System.out.println("Objednávky byly načteny ze souboru '" + filename + "'.");
+            } catch (IOException e) {
+                System.err.println("Chyba při načítání objednávek: " + e.getMessage());
             }
-            System.out.println("Objednávky byly načteny ze souboru '" + filename + "'.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (RestaurantException | IOException e) {
+            System.err.println("Chyba při zjišťování velikosti souboru: " + e.getMessage());
         }
     }
 
-    // Metóda na parsovanie riadku na objekt Order
+
     private Order loadOrderFromLine(String line) {
         String[] parts = line.split("\t");
         if (parts.length != 7) {
-            return null; // Nesprávny počet položiek, vrátime null
-        }
+            return null;         }
 
         int orderId = Integer.parseInt(parts[0]);
         int tableNumber = Integer.parseInt(parts[1]);
@@ -59,11 +68,9 @@ public class OrderManager {
         //LocalTime orderTime = LocalTime.parse(parts[4], DateTimeFormatter.ofPattern("HH:mm"));
         //String fulfilmentTime = fulfilmentTimeString(LocalTime.parse(parts[5]));
         boolean isPaid = Boolean.parseBoolean(parts[6]);
-
         Order order = new Order(tableNumber, dishId, countDish);
         order.setOrderId(orderId);
         order.setPaid(isPaid);
-
         return order;
     }
 

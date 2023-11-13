@@ -44,11 +44,9 @@ public class RestaurantManager {
                 totalProcessingTime = totalProcessingTime.plus(processingTime);
             }
         }
-
         if (totalProcessedOrders == 0) {
-            return 0; // Prevent division by zero
+            return 0;
         }
-
         double averageTimeInSeconds = totalProcessingTime.getSeconds() / (double) totalProcessedOrders;
         return averageTimeInSeconds;
     }
@@ -58,19 +56,25 @@ public class RestaurantManager {
         if (fulfilmentTime != null) {
             return Duration.between(orderTime, fulfilmentTime);
         } else {
-            return Duration.ZERO; // V prípade, že objednávka ešte nie je vybavená
+            return Duration.ZERO;
         }
-    }    public void printTodayOrderedDishes() {
+    }
+    public void printTodayOrderedDishes() {
         LocalDate today = LocalDate.now();
         System.out.println("Dnešné objednané jedlá:");
-
+        Set<Integer> todayDishes = new HashSet<>();
         for (Order order : order.getOrders().values()) {
             LocalDate orderDate = LocalDate.now();
             if (orderDate.equals(today)) {
-                System.out.println( CookBook.getDishById(order.getDishId()) );
+                int dishId = order.getDishId();
+                if (!todayDishes.contains(dishId)) {
+                    System.out.println(CookBook.getDishById(dishId));
+                    todayDishes.add(dishId);
+                }
             }
         }
     }
+
 
 
 

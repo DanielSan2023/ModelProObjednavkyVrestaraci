@@ -2,6 +2,8 @@ package com.Engeto.Restaurant;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -78,21 +80,30 @@ public class CookBook {
         for (Dish dish : cookBook.getDishes()) {
         writer.println(dish.getIdDish()+Settings.fileItemDelimiter()+dish.getTitle() + Settings.fileItemDelimiter() + dish.getPrice() + Settings.fileItemDelimiter()
                 + dish.getPreparationTime());
-      }
+
+      }System.out.println("Jedlá boli uložené do suboru '" + filename + "'.");
     } catch (IOException e) {
       throw new DishException("Chyba při zápisu do souboru '" + filename + "': " + e.getLocalizedMessage());
     }
   }
 
+
   public static void loadDishesFromFile(String filename) throws DishException {
-    try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(filename)))) {
+    try {
+      if (Files.size(Paths.get(filename)) == 0) {
+        throw new DishException("Soubor '" + filename + "' je prázdný.");
+      }
+      try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(filename)))) {
         while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
-        Dish dish = parseDishLine(line);
-        addDish(dish); // Přidejte vytvořený objekt Dish do seznamu jídel
+          String line = scanner.nextLine();
+          Dish dish = parseDishLine(line);
+          addDish(dish); // Přidejte vytvořený objekt Dish do seznamu jídel
+        }
       }
     } catch (FileNotFoundException e) {
       throw new DishException("Nepodařilo se nalézt soubor " + filename + ": " + e.getLocalizedMessage());
+    } catch (IOException e) {
+      throw new DishException("Chyba při načítání jídel ze souboru " + filename + ": " + e.getLocalizedMessage());
     }
   }
   private static Dish parseDishLine(String line) throws DishException {

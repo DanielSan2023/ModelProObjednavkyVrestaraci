@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7088a236-ff45-41e2-a1e3-314c9faece92" name="Changes" comment="add method for set fulfilmentTime and paidOrder&#10;check load - save f/t orders.txt">
+    <list default="true" id="7088a236-ff45-41e2-a1e3-314c9faece92" name="Changes" comment="add method for Orders in class RestaurantManager">
+      <change afterPath="$PROJECT_DIR$/dishesEmpty.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/orderEmpty.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listDishes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/listDishes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/listDishesSave.txt" beforeDir="false" afterPath="$PROJECT_DIR$/listDishesSave.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/orders.txt" beforeDir="false" afterPath="$PROJECT_DIR$/orders.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/CookBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/CookBook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Order.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/RestaurantManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/RestaurantManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Settings.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +186,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699471519035</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="add class RestaurantManager">
+      <created>1699731586198</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1699731586198</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add method for Orders in class RestaurantManager">
+      <created>1699731641440</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1699731641440</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -244,7 +262,9 @@
     <MESSAGE value="Add orders.txt for orderList" />
     <MESSAGE value="add  class OrderManager for orders" />
     <MESSAGE value="add method for set fulfilmentTime and paidOrder&#10;check load - save f/t orders.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="add method for set fulfilmentTime and paidOrder&#10;check load - save f/t orders.txt" />
+    <MESSAGE value="add class RestaurantManager" />
+    <MESSAGE value="add method for Orders in class RestaurantManager" />
+    <option name="LAST_COMMIT_MESSAGE" value="add method for Orders in class RestaurantManager" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -256,17 +276,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>10</line>
+          <line>12</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>12</line>
+          <line>14</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>16</line>
+          <line>18</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -281,33 +301,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>94</line>
+          <line>95</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>96</line>
+          <line>97</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>95</line>
+          <line>96</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>66</line>
+          <line>73</line>
           <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/Engeto/Restaurant/RestaurantManager.java</url>

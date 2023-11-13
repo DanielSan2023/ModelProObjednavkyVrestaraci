@@ -1,11 +1,12 @@
 
 import com.Engeto.Restaurant.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DishException {
         CookBook cookBook = new CookBook();
         List<Order> orders = new ArrayList<>();
         Order order = new Order();
@@ -96,21 +97,53 @@ public class Main {
 //        order.printOrdersForTable(9);
 //        order.printOrdersForTable(11);
 
+//        ordermanager.loadOrdersFromFile(Settings.fileOrdersForLoad());
 
 
-
-        //TESTOVACI SCENAR
-        //1.Načti stav evidence z disku
-//        try {CookBook.loadDishesFromFile(Settings.fileDishesForLoad());
-//        } catch (DishException e) {
-//            System.err.println("Chyba pri cteni ze souboru : "+e.getLocalizedMessage()); }
+                    //TESTOVACI SCENAR
+        //1.Stav evidence z disku:
+        loadDataFromExistFiles(ordermanager);
 
         //2.Připrav testovací data:
+        pripareDataForTesting(cookBook, order);
+
+        //3.Celkova cena konzumace pro stul 15:
+        order.printTotalDishPriceForTable(15);
+
+        //4.Informace pre Management:
+        printForRestaurantManagement(restaurantManager);
+
+        //5.Uloz data na disk:
+        saveDishesAndOrdertoFiles(cookBook, ordermanager);
+
+        //6.Zoznam objednavok pre stol 15:
+        order.printOrdersForTable(15);
+
+
+    }
+
+    private static void saveDishesAndOrdertoFiles(CookBook cookBook, OrderManager ordermanager) {
+        try {
+            cookBook.saveToFile(Settings.fileDishesForSave(), cookBook);
+        } catch (DishException e) {
+            throw new RuntimeException(e);
+        }
+        ordermanager.saveOrdersToFile(Settings.fileOrdersForSave());
+    }
+
+    private static void printForRestaurantManagement(RestaurantManager restaurantManager) {
+        restaurantManager.countUnfinishedOrders();
+        restaurantManager.sortOrdersByOrderTime();
+        System.out.println("Priemerna doba spracovanie objednavok: " + restaurantManager.averageProcessTimeforOrders());
+        restaurantManager.printTodayOrderedDishes();
+    }
+
+    private static void pripareDataForTesting(CookBook cookBook, Order order) {
         try {
             cookBook.addDishObj(new Dish("Kureci rizek obalovany 150g",6.50));
-            cookBook.addDishObj(new Dish("Hranolky 150g",3.50));
-            cookBook.addDishObj(new Dish("Pstruh na vine 200g",12.50));
-            cookBook.addDishObj(new Dish("Kofola 0,5l",3.00));
+            cookBook.addDishObj(new Dish("Hranolky 150g",3.50,15));
+            cookBook.addDishObj(new Dish("Pstruh na vine 200g",12.50,25));
+            cookBook.addDishObj(new Dish("Kofola 0,5l",3.00,5));
         } catch (DishException e) {
             throw new RuntimeException(e);
         }
@@ -118,54 +151,17 @@ public class Main {
         order.addOrder(new Order(15,2,2));
         order.addOrder(new Order(15,4,2));
 
-        //         //  Load File listdishes.txt
-        try {
-            CookBook.loadDishesFromFile(Settings.fileDishesForLoad());
+        order.addOrder(new Order(2,4,3));
+        order.addOrder(new Order(2,2,3));
+        order.addOrder(new Order(2,3,3));
+    }
+
+    private static void loadDataFromExistFiles(OrderManager ordermanager) {
+        try {CookBook.loadDishesFromFile(Settings.fileDishesForLoad());
         } catch (DishException e) {
-            System.err.println("Chyba pri cteni ze souboru : "+e.getLocalizedMessage());
-        }
-
-
-
-
-        // Vytvoření objednávek
-        Order order2 = new Order(2, 1,3);
-        Order order4 = new Order(2, 3);
-        Order order8 = new Order(2, 9,2);
-        Order order10 = new Order(2, 6);
-        Order order12 = new Order(11, 1,4);
-        Order order14 = new Order(11, 7);
-        Order order16 = new Order(11, 2,4);
-        Order order18 = new Order(11, 6);
-        Order order5 = new Order(9, 1,2);
-        Order order7 = new Order(9, 3);
-
-
-
-        order.addOrder(order2);
-        order.addOrder(order4);
-        order.addOrder(order8);
-        order.addOrder(order10);
-        order.addOrder(order12);
-        order.addOrder(order14);
-        order.addOrder(order16);
-        order.addOrder(order18);
-        order.addOrder(order5);
-        order.addOrder(order7);
-        //        //vypise all dishes
-        cookBook.printDishes();
-
-        //3.Celkova cena konzumace pro stul 15:
-        order.printTotalDishPriceForTable(15);
-
-        //4.
-        restaurantManager.countUnfinishedOrders();
-
-        restaurantManager.sortOrdersByOrderTime();
-        System.out.println(restaurantManager.averageProcessTimeforOrders());
-
-          restaurantManager.printTodayOrderedDishes();
+            System.err.println("Chyba pri cteni ze souboru : "+e.getLocalizedMessage()); }
+        ordermanager.loadOrdersFromFile(Settings.fileOrdersForLoad());
     }
 
 
-    }
+}
