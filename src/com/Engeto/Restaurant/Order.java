@@ -1,14 +1,10 @@
 package com.Engeto.Restaurant;
-
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Order {
-
-
 
     private int orderId;
     private int tableNumber;
@@ -18,122 +14,11 @@ public class Order {
     private boolean isPaid;
     private int countDish = 1;
     private static  int nextBillId =1 ;
-
-
-
     private static int nextOrderId =1;
 
-    //  zoznam objednavok : Tablenumber,Objednavka
     private  static Map<Integer, Order> orders = new HashMap<>();
 
-
-    public  List<Order> getOrdersForTable(int tableNumber) {
-        return orders.values()
-                .stream()
-                .filter(order -> order.getTableNumber() == tableNumber)
-                .collect(Collectors.toList());
-    }
-
-    public  void printOrdersForTable(int tableNumber) {
-        setNextBillId();
-        List<Order> orders = getOrdersForTable(tableNumber);
-              if (orders.isEmpty()) {
-            System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
-        } else {
-            System.out.println("** Objednávky pro stůl č." + formatTableNumber(tableNumber) + " **");
-            System.out.println("****");
-            for (Order order : orders) {
-                System.out.println(order.getDescription());
-            }
-            System.out.println("******");
-        }
-    }
-
-
-
-    public String getDescription() {
-
-        StringBuilder description = new StringBuilder();
-        description.append(Order.getNextBillId()).append(".").append(" ").append(dish.getTitle())
-                .append(" ").append(countDish).append(" ").append("(")
-                .append(totalDishPrice()).append(" €").append(")").append(":").append("\t")
-                .append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("-");
-
-        if (fulfilmentTime != null) {
-            description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
-                }
-        description.append(isPaid ? "Zaplaceno" : "");
-
-        return description.toString();
-    }
-
-    public void printTotalDishPriceForTable(int tableNumber) {
-        List<Order> orders = getOrdersForTable(tableNumber);
-        double total = 0.0;
-        for (Order order : orders) {
-            total += order.totalDishPrice();
-        }
-        System.out.println("Celkova cena konzumace pro stůl číslo "+tableNumber +" je :"  + Math.round(total * 100.0) / 100.0+"€");
-    }
-
-    public double totalDishPrice() {
-        double price = countDish * dish.getPrice();
-        return Math.round(price * 100.0) / 100.0;
-    }
-    public static String formatTableNumber(int tableNumber) {
-        if (tableNumber >= 1 && tableNumber <= 9) {
-            return " " + tableNumber;  // Přidejte mezeru před jednocifernými čísly
-        } else {
-            return String.valueOf(tableNumber);  // Vrací dvojciferná čísla beze změn
-        }
-    }
-    public void setPaidForOrder(int orderId) throws DishException {
-        Order order = getOrderById(orderId); // Získa objednávku na základe ID
-        try {
-            if (order != null) {
-                if (order.getFulfilmentTime() != null) {
-                    order.markAsPaid();
-                } else {
-                    throw new DishException("Objednávka s ID " + orderId + " nebola vybavená, a preto nemôže byť označená ako zaplatená.");
-                }
-            } else {
-                throw new DishException("Objednávka s ID " + orderId + " neexistuje.");
-            }
-        } catch (Exception e) {
-            throw new DishException("Chyba pri platení objednávky: " + e.getMessage());
-        }
-    }
-
-
-
-
-
-    public void setFulfilmentTimeForOrder(int orderId) {
-        Order order = getOrderById(orderId); // Získa objednávku na základe ID
-        if (order != null) {
-            order.settingFulfilmentTime();
-        }
-    }
-    public Order getOrderById(int orderId) {
-        return orders.values()
-                .stream()
-                .filter(order -> order.getOrderId() == orderId)
-                .findFirst()
-                .orElse(null);
-    }
-
-
-    public void settingFulfilmentTime() {
-        if (orderTime != null && dish != null) {
-            int preparationTimeMinutes = dish.getPreparationTime();
-            if (preparationTimeMinutes > 0) {
-                fulfilmentTime = orderTime.plusMinutes(preparationTimeMinutes);
-            }
-        }
-    }
-
-
-//region construktors
+//region constructors
 
     public Order(int tableNumber, int dishId, int countDish) {
         this.orderId = nextOrderId++;
@@ -142,8 +27,7 @@ public class Order {
         this.orderTime = LocalTime.now();
         this.isPaid = false;
         this.countDish = countDish;
-        // Přidání objednávky do kolekce "orderss" s číslem stolu a objektem třídy Dish
-        addOrder(this);
+           addOrder(this);
     }
 
     public Order(int tableNumber, int dishId) {
@@ -153,8 +37,7 @@ public class Order {
         this.orderTime = LocalTime.now();
         this.isPaid = false;
         this.countDish = 1;
-        // Přidání objednávky do kolekce "orderss" s číslem stolu a objektem třídy Dish
-        addOrder(this);
+            addOrder(this);
 
     }
     public Order() {
@@ -162,7 +45,7 @@ public class Order {
 
 //endregion construktors
 
-//region Getter Setter
+    //region Getter Setter
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
@@ -215,8 +98,6 @@ public class Order {
     public  LocalTime getOrderTime() {
         return orderTime;
     }
-
-
     public LocalTime getFulfilmentTime() {
         return fulfilmentTime;
     }
@@ -236,7 +117,93 @@ public class Order {
         this.countDish = countDish;
     }
 
-//endregion Getter Setter
+    //endregion Getter Setter
+
+
+
+    public  List<Order> getOrdersForTable(int tableNumber) {
+        return orders.values()
+                .stream()
+                .filter(order -> order.getTableNumber() == tableNumber)
+                .collect(Collectors.toList());
+    }
+
+
+    public String getDescription() {
+        StringBuilder description = new StringBuilder();
+        description.append(Order.getNextBillId()).append(".").append(" ").append(dish.getTitle())
+                .append(" ").append(countDish).append(" ").append("(")
+                .append(totalDishPrice()).append(" €").append(")").append(":").append("\t")
+                .append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("-");
+        if (fulfilmentTime != null) {
+            description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
+                }
+        description.append(isPaid ? "Zaplaceno" : "");
+        return description.toString();
+    }
+
+    public void printTotalDishPriceForTable(int tableNumber) {
+        List<Order> orders = getOrdersForTable(tableNumber);
+        double total = 0.0;
+        for (Order order : orders) {
+            total += order.totalDishPrice();
+        }
+        System.out.println("Celkova cena konzumace pro stůl číslo "
+                +tableNumber +" je :"  + Math.round(total * 100.0) / 100.0+"€");
+    }
+
+    public double totalDishPrice() {
+        double price = countDish * dish.getPrice();
+        return Math.round(price * 100.0) / 100.0;
+    }
+    public static String formatTableNumber(int tableNumber) {
+        if (tableNumber >= 1 && tableNumber <= 9) {
+            return " " + tableNumber;
+        } else {
+            return String.valueOf(tableNumber);
+        }
+    }
+    public void setPaidForOrder(int orderId) throws DishException {
+        Order order = getOrderById(orderId);
+        try {
+            if (order != null) {
+                if (order.getFulfilmentTime() != null) {
+                    order.markAsPaid();
+                } else {
+                    throw new DishException("Objednávka s ID " + orderId + " nebola vybavená, a preto nemôže byť označená ako zaplatená.");
+                }
+            } else {
+                throw new DishException("Objednávka s ID " + orderId + " neexistuje.");
+            }
+        } catch (Exception e) {
+            throw new DishException("Chyba pri platení objednávky: " + e.getMessage());
+        }
+    }
+
+    public void setFulfilmentTimeForOrder(int orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            order.settingFulfilmentTime();
+        }
+    }
+    public Order getOrderById(int orderId) {
+        return orders.values()
+                .stream()
+                .filter(order -> order.getOrderId() == orderId)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void settingFulfilmentTime() {
+        if (orderTime != null && dish != null) {
+            int preparationTimeMinutes = dish.getPreparationTime();
+            if (preparationTimeMinutes > 0) {
+                fulfilmentTime = orderTime.plusMinutes(preparationTimeMinutes);
+            }
+        }
+    }
+
+
     @Override
         public String toString () {
             return "Order{" +

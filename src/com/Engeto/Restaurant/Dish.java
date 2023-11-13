@@ -15,9 +15,7 @@ public class Dish {
         this.idDish = nextId++;
         this.title = title;
         this.price = price;
-        if (preparationTime <= 0) {
-            throw new DishException("Neplatne cislo: " + preparationTime);
-        }
+        checkPreparationTime(preparationTime);
         this.preparationTime = preparationTime;
         this.image = image;
     }
@@ -26,11 +24,9 @@ public class Dish {
         this.idDish = idDish;
         this.title = title;
         this.price = price;
-        if (preparationTime <= 0) {
-            throw new DishException("Neplatne cislo: " + preparationTime);
-        }
+        checkPreparationTime(preparationTime);
         this.preparationTime = preparationTime;
-        this.image = "blank"; // Inicializujte image zde
+        this.image = "blank";
     }
 
     public Dish(String title, double price, int preparationTime) throws DishException {
@@ -40,6 +36,8 @@ public class Dish {
     public Dish(String title, double price) throws DishException {
         this(title, price, 30, "blank");
     }
+
+
     //endregion
 
     //region Getter Setter
@@ -84,7 +82,11 @@ public class Dish {
         this.idDish = idDish;
     }
     //endregion
-
+    private void checkPreparationTime(int preparationTime) throws DishException {
+        if (preparationTime <= 0) {
+            throw new DishException("Neplatné číslo: " + preparationTime);
+        }
+    }
 
     @Override
     public String toString() {

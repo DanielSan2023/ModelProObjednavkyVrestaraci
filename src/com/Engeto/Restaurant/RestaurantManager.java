@@ -5,18 +5,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+import static com.Engeto.Restaurant.Order.formatTableNumber;
+
 public class RestaurantManager {
     Order order = new Order();
-    CookBook cookBook = new CookBook();
+
 
     public void countUnfinishedOrders() {
-        // Pomocná proměnná pro počítání nedokončených objednávek
-        int unfinishedOrders = 0;
-
-        // Procházení všech objednávek
+           int unfinishedOrders = 0;
         for (Order order : order.getOrders().values()) {
-            // Pokud objednávka není označena jako zaplacená a nemá vyplněný čas vyhotovení
-            if (!order.isPaid() && order.getFulfilmentTime() == null) {
+              if (!order.isPaid() && order.getFulfilmentTime() == null) {
                 unfinishedOrders++;
             }
         }
@@ -25,18 +23,14 @@ public class RestaurantManager {
     }
     public void sortOrdersByOrderTime() {
         List<Order> ordersList = new ArrayList<>(order.getOrders().values());
-
         Collections.sort(ordersList, Comparator.comparing(Order::getOrderTime));
-
-        // Vypíšte usporiadané objednávky
-        for (Order order : ordersList) {
+                for (Order order : ordersList) {
             System.out.println("Order ID: " + order.getOrderId() + ", Time: " + order.getOrderTime());
         }
     }
     public double averageProcessTimeforOrders() {
         int totalProcessedOrders = 0;
         Duration totalProcessingTime = Duration.ZERO;
-
         for (Order order : order.getOrders().values()) {
             Duration processingTime = getOrderProcessingTime(order);
             if (!processingTime.isZero()) {
@@ -72,6 +66,20 @@ public class RestaurantManager {
                     todayDishes.add(dishId);
                 }
             }
+        }
+    }
+    public  void printOrdersForTable(int tableNumber) {
+        order.setNextBillId();
+        List<Order> orders = order.getOrdersForTable(tableNumber);
+        if (orders.isEmpty()) {
+            System.out.println("Stůl " + tableNumber + " nemá žádné objednávky.");
+        } else {
+            System.out.println("** Objednávky pro stůl č." + formatTableNumber(tableNumber) + " **");
+            System.out.println("****");
+            for (Order order : orders) {
+                System.out.println(order.getDescription());
+            }
+            System.out.println("******");
         }
     }
 
