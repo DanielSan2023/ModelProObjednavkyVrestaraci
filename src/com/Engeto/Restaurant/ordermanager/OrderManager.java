@@ -1,4 +1,7 @@
-package com.Engeto.Restaurant;
+package com.Engeto.Restaurant.ordermanager;
+
+import com.Engeto.Restaurant.exceptions.RestaurantException;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,21 +11,24 @@ import java.time.format.DateTimeFormatter;
 
 public class OrderManager {
     Order order = new Order();
-    public  void saveOrdersToFile(String filename) {
 
-         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+    public void saveOrdersToFile(String filename) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Order order : order.getOrders().values()) {
-                writer.write(order.getOrderId() + "\t" + order.getTableNumber()+"\t"
-                +order.getDishId()+"\t"+order.getCountDish()+"\t" +order.getOrderTime()
-               .format(DateTimeFormatter.ofPattern("HH:mm"))
-                +"\t"+ fulfilmentTimeString(order.getFulfilmentTime())+"\t" +order.isPaid());
-                writer.newLine(); }
+                writer.write(order.getOrderId() + "\t" + order.getTableNumber() + "\t"
+                        + order.getDishId() + "\t" + order.getCountDish() + "\t" + order.getOrderTime()
+                        .format(DateTimeFormatter.ofPattern("HH:mm"))
+                        + "\t" + fulfilmentTimeString(order.getFulfilmentTime()) + "\t" + order.isPaid());
+                writer.newLine();
+            }
             System.out.println("Objednávky byly uloženy do souboru '" + filename + "'.");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public  static String fulfilmentTimeString(LocalTime localtime){
+
+    public static String fulfilmentTimeString(LocalTime localtime) {
         String fulfilmentTimeStr = localtime != null ?
                 localtime.format(DateTimeFormatter.ofPattern("HH:mm")) : "null";
 
@@ -35,7 +41,8 @@ public class OrderManager {
         try {
             if (Files.size(file) == 0) {
                 System.out.println("Soubor '" + filename + "' je prázdný.");
-                return;  }
+                return;
+            }
             try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -43,7 +50,9 @@ public class OrderManager {
                     if (order != null) {
                         order.addOrder(order);
                     } else {
-                        throw new RestaurantException("Neplatný formát řádku v souboru " + filename);    }    }
+                        throw new RestaurantException("Neplatný formát řádku v souboru " + filename);
+                    }
+                }
                 System.out.println("Objednávky byly načteny ze souboru '" + filename + "'.");
             } catch (IOException e) {
                 System.err.println("Chyba při načítání objednávek: " + e.getMessage());
@@ -57,7 +66,8 @@ public class OrderManager {
     private Order loadOrderFromLine(String line) {
         String[] parts = line.split("\t");
         if (parts.length != 7) {
-            return null;         }
+            return null;
+        }
 
         int orderId = Integer.parseInt(parts[0]);
         int tableNumber = Integer.parseInt(parts[1]);
@@ -71,9 +81,6 @@ public class OrderManager {
         order.setPaid(isPaid);
         return order;
     }
-
-
-
 
 
 }

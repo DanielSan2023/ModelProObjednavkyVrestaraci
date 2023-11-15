@@ -1,33 +1,37 @@
-package com.Engeto.Restaurant;
+package com.Engeto.Restaurant.restaurantmanagement;
+
+import com.Engeto.Restaurant.dishmanager.CookBook;
+import com.Engeto.Restaurant.ordermanager.Order;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import static com.Engeto.Restaurant.Order.formatTableNumber;
+import static com.Engeto.Restaurant.ordermanager.Order.formatTableNumber;
 
 public class RestaurantManager {
     Order order = new Order();
 
 
     public void countUnfinishedOrders() {
-           int unfinishedOrders = 0;
+        int unfinishedOrders = 0;
         for (Order order : order.getOrders().values()) {
-              if (!order.isPaid() && order.getFulfilmentTime() == null) {
+            if (!order.isPaid() && order.getFulfilmentTime() == null) {
                 unfinishedOrders++;
             }
         }
 
-        System.out.println("Počet aktualne rozpracovaných objednávek : "+  unfinishedOrders );
-    }
+        System.out.println("Počet aktualne rozpracovaných objednávek : " + unfinishedOrders);    }
+
     public void sortOrdersByOrderTime() {
         List<Order> ordersList = new ArrayList<>(order.getOrders().values());
         Collections.sort(ordersList, Comparator.comparing(Order::getOrderTime));
-                for (Order order : ordersList) {
+        for (Order order : ordersList) {
             System.out.println("Order ID: " + order.getOrderId() + ", Time: " + order.getOrderTime());
         }
     }
+
     public double averageProcessTimeforOrders() {
         int totalProcessedOrders = 0;
         Duration totalProcessingTime = Duration.ZERO;
@@ -44,6 +48,7 @@ public class RestaurantManager {
         double averageTimeInSeconds = totalProcessingTime.getSeconds() / (double) totalProcessedOrders;
         return averageTimeInSeconds;
     }
+
     public Duration getOrderProcessingTime(Order order) {
         LocalTime orderTime = order.getOrderTime();
         LocalTime fulfilmentTime = order.getFulfilmentTime();
@@ -53,6 +58,7 @@ public class RestaurantManager {
             return Duration.ZERO;
         }
     }
+
     public void printTodayOrderedDishes() {
         LocalDate today = LocalDate.now();
         System.out.println("Dnešné objednané jedlá:");
@@ -68,7 +74,8 @@ public class RestaurantManager {
             }
         }
     }
-    public  void printOrdersForTable(int tableNumber) {
+
+    public void printOrdersForTable(int tableNumber) {
         order.setNextBillId();
         List<Order> orders = order.getOrdersForTable(tableNumber);
         if (orders.isEmpty()) {
@@ -82,9 +89,6 @@ public class RestaurantManager {
             System.out.println("******");
         }
     }
-
-
-
 
 
 }

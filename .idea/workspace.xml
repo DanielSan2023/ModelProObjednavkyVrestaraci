@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7088a236-ff45-41e2-a1e3-314c9faece92" name="Changes" comment="add method for testing Application">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dishesEmpty.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exit" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/listDishes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/listDishes.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/listDishesSave.txt" beforeDir="false" afterPath="$PROJECT_DIR$/listDishesSave.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orderEmpty.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders.txt" beforeDir="false" afterPath="$PROJECT_DIR$/orders.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/CookBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/CookBook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Dish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Dish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/OrderManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/RestaurantManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/RestaurantManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Engeto/Restaurant/Table.java" beforeDir="false" />
-    </list>
+    <list default="true" id="7088a236-ff45-41e2-a1e3-314c9faece92" name="Changes" comment="ready for inspection" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -211,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699875147060</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="ready for inspection">
+      <created>1699877911369</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1699877911369</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -276,7 +267,8 @@
     <MESSAGE value="add class RestaurantManager" />
     <MESSAGE value="add method for Orders in class RestaurantManager" />
     <MESSAGE value="add method for testing Application" />
-    <option name="LAST_COMMIT_MESSAGE" value="add method for testing Application" />
+    <MESSAGE value="ready for inspection" />
+    <option name="LAST_COMMIT_MESSAGE" value="ready for inspection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

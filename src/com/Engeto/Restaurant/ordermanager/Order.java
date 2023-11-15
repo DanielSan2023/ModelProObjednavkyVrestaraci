@@ -1,4 +1,9 @@
-package com.Engeto.Restaurant;
+package com.Engeto.Restaurant.ordermanager;
+
+import com.Engeto.Restaurant.dishmanager.CookBook;
+import com.Engeto.Restaurant.dishmanager.Dish;
+import com.Engeto.Restaurant.exceptions.DishException;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -13,10 +18,10 @@ public class Order {
     private LocalTime fulfilmentTime;
     private boolean isPaid;
     private int countDish = 1;
-    private static  int nextBillId =1 ;
-    private static int nextOrderId =1;
+    private static int nextBillId = 1;
+    private static int nextOrderId = 1;
 
-    private  static Map<Integer, Order> orders = new HashMap<>();
+    private static Map<Integer, Order> orders = new HashMap<>();
 
 //region constructors
 
@@ -27,7 +32,7 @@ public class Order {
         this.orderTime = LocalTime.now();
         this.isPaid = false;
         this.countDish = countDish;
-           addOrder(this);
+        addOrder(this);
     }
 
     public Order(int tableNumber, int dishId) {
@@ -37,9 +42,10 @@ public class Order {
         this.orderTime = LocalTime.now();
         this.isPaid = false;
         this.countDish = 1;
-            addOrder(this);
+        addOrder(this);
 
     }
+
     public Order() {
     }
 
@@ -61,22 +67,25 @@ public class Order {
     public void addOrder(Order order) {
         orders.put(order.getOrderId(), order);
     }
-    public  Order getOrder(int orderId) {
+
+    public Order getOrder(int orderId) {
         return orders.get(orderId);
     }
 
-    public  Map<Integer, Order> getOrders() {
+    public Map<Integer, Order> getOrders() {
         return orders;
     }
 
     public void setOrders(Map<Integer, Order> orders) {
         this.orders = orders;
     }
+
     public static int getNextBillId() {
         return nextBillId++;
     }
+
     public void setNextBillId() {
-        this.nextBillId=1;
+        this.nextBillId = 1;
     }
 
     public void markAsPaid() {
@@ -95,16 +104,18 @@ public class Order {
         return dish.getIdDish();
     }
 
-    public  LocalTime getOrderTime() {
+    public LocalTime getOrderTime() {
         return orderTime;
     }
+
     public LocalTime getFulfilmentTime() {
         return fulfilmentTime;
     }
 
-    public void setFulfilmentTime(String time){
+    public void setFulfilmentTime(String time) {
         this.fulfilmentTime = fulfilmentTime;
     }
+
     public boolean isPaid() {
         return isPaid;
     }
@@ -120,8 +131,7 @@ public class Order {
     //endregion Getter Setter
 
 
-
-    public  List<Order> getOrdersForTable(int tableNumber) {
+    public List<Order> getOrdersForTable(int tableNumber) {
         return orders.values()
                 .stream()
                 .filter(order -> order.getTableNumber() == tableNumber)
@@ -137,7 +147,7 @@ public class Order {
                 .append(orderTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("-");
         if (fulfilmentTime != null) {
             description.append(fulfilmentTime.format(DateTimeFormatter.ofPattern("HH:mm"))).append("\t");
-                }
+        }
         description.append(isPaid ? "Zaplaceno" : "");
         return description.toString();
     }
@@ -149,13 +159,14 @@ public class Order {
             total += order.totalDishPrice();
         }
         System.out.println("Celkova cena konzumace pro stůl číslo "
-                +tableNumber +" je :"  + Math.round(total * 100.0) / 100.0+"€");
+                + tableNumber + " je :" + Math.round(total * 100.0) / 100.0 + "€");
     }
 
     public double totalDishPrice() {
         double price = countDish * dish.getPrice();
         return Math.round(price * 100.0) / 100.0;
     }
+
     public static String formatTableNumber(int tableNumber) {
         if (tableNumber >= 1 && tableNumber <= 9) {
             return " " + tableNumber;
@@ -163,6 +174,7 @@ public class Order {
             return String.valueOf(tableNumber);
         }
     }
+
     public void setPaidForOrder(int orderId) throws DishException {
         Order order = getOrderById(orderId);
         try {
@@ -186,6 +198,7 @@ public class Order {
             order.settingFulfilmentTime();
         }
     }
+
     public Order getOrderById(int orderId) {
         return orders.values()
                 .stream()
@@ -205,13 +218,13 @@ public class Order {
 
 
     @Override
-        public String toString () {
-            return "Order{" +
-                    "tableNumber=" + tableNumber +
-                    ", dish=" + dish +
-                    ", orderTime=" + orderTime +
-                    ", fulfilmentTime=" + fulfilmentTime +
-                    ", isPaid=" + isPaid +
-                    '}';
-        }
+    public String toString() {
+        return "Order{" +
+                "tableNumber=" + tableNumber +
+                ", dish=" + dish +
+                ", orderTime=" + orderTime +
+                ", fulfilmentTime=" + fulfilmentTime +
+                ", isPaid=" + isPaid +
+                '}';
     }
+}

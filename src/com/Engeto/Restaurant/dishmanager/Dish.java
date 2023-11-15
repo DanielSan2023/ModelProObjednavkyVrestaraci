@@ -1,6 +1,7 @@
-package com.Engeto.Restaurant;
+package com.Engeto.Restaurant.dishmanager;
 
 
+import com.Engeto.Restaurant.exceptions.DishException;
 
 public class Dish {
     private static int nextId = 1; // Inicializujte nextId na počáteční hodnotu 1
@@ -81,6 +82,7 @@ public class Dish {
     public void setIdDish(int idDish) {
         this.idDish = idDish;
     }
+
     //endregion
     private void checkPreparationTime(int preparationTime) throws DishException {
         if (preparationTime <= 0) {

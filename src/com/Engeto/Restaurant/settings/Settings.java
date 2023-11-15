@@ -1,4 +1,4 @@
-package com.Engeto.Restaurant;
+package com.Engeto.Restaurant.settings;
 
 public class Settings {
     private static final String fileItemDelimiterValue = "\t";
@@ -9,17 +9,26 @@ public class Settings {
 
 
     public static String fileItemDelimiter() {
+
         return fileItemDelimiterValue;
     }
 
-    public static String fileDishesForLoad() { return fileForDishes;    }
-    public static String fileDishesForSave() {
+    public static String fileDishesForLoad() {
         return fileForDishes;
     }
 
-    public static String fileOrdersForLoad() {        return fileForOrders;    }
-    public static String fileOrdersForSave() {        return fileForOrders;    }
+    public static String fileDishesForSave() {
 
+        return fileForDishes;
+    }
+
+    public static String fileOrdersForLoad() {
+        return fileForOrders;
+    }
+
+    public static String fileOrdersForSave() {
+        return fileForOrders;
+    }
 
 
 }
